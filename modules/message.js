@@ -1,4 +1,4 @@
-const webSocketUrl = 'ws://localhost:3000/cable'
+const webSocketUrl = 'ws://localhost:3001/cable'
 
 function renderChatroomOnList(chatroom){
     const list = document.querySelector('div.chatroom-list')
