@@ -100,20 +100,23 @@ function renderMessage(message){
 
     messageBody.textContent = message.message_text
     messageBtn.innerText = "Decrypt"
+    messageBtn.addEventListener("click", decryptMessage )
 
     messageRow.append(messageBody, messageBtn)
     
-    messageBtn.addEventListener("click", decryptMessage)
 
     return messageRow;
 }
 
 
 function decryptMessage(e) {
+    
     let textField = e.target.previousElementSibling.innerText
+    // console.log(e);
     const encryption_type = document.querySelector('select#encrypt-type')
     
     if (encryption_type.value === '1') {
+        console.log('testing...')
         // make the message object { }
         let messageObject = {
             message: textField,
@@ -131,13 +134,13 @@ function decryptMessage(e) {
         } 
         getDecryption(messageObject);
     } else {
-        // const encryption_key = document.querySelector('select#key-type')
+        
         let messageObject = {
-            message: textField.value,
+            message: textField,
             type: encryption_type.value,
             key: generateEngimaKeyString()
         } 
-        
+        getDecryption(messageObject);
     }
     
     
@@ -145,7 +148,7 @@ function decryptMessage(e) {
 
 function getDecryption(message_obj){
     console.log(message_obj)
-    
+    console.log("decrypting....")
     // debugger
     // {message: "string", type: "string_of_a_number", key: "whatever"}
     fetch(`${url}/encryptions/decrypt`, {
