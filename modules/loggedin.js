@@ -28,7 +28,8 @@ function loggedInUI() {
     chatForm.className = 'add-chat-form'
     const chatInput = document.createElement('input')
     chatInput.type = 'text'
-    chatInput.pplaceholder = ''
+    chatInput.className = 'add-chatroom-name'
+    chatInput.placeholder = ''
     const chatBtn = document.createElement('button')
     chatBtn.setAttribute('id', 'add-chat')
     chatBtn.type = 'submit'

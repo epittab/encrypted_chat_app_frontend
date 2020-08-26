@@ -299,6 +299,7 @@ function loadChatrooms(){
     .then(res => res.json() )
     .then( chatroomList => {
         chatroomList.forEach((chatroom) => {
+            console.log(chatroom)
             renderChatroomOnList(chatroom)
         })
     })
