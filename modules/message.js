@@ -1,26 +1,39 @@
 const webSocketUrl = 'ws://localhost:3001/cable'
 
+//create socket
+let socket = new WebSocket(webSocketUrl);
+
 function renderChatroomOnList(chatroom){
     const list = document.querySelector('div.chatroom-list')
     const chatItem = document.createElement('div')
     chatItem.className = 'chatroom-item'
-
+    
     const chatroomNumber = document.createElement('h3')
     chatroomNumber.innerText = chatroom.id
-
+    
     let button = document.createElement('button')
     button.className='join-chatroom-button'
     button.dataset.chatroomId = chatroom.id
     button.innerText = 'Join'
-
+    
     chatItem.append(chatroomNumber, button)
-
+    
     list.append(chatItem)
+    
+    
     button.addEventListener('click', getChatroomInfo)
-
+    
 }
 
 function getChatroomInfo(e) {
+    //close previous websocket connections, if connection exists
+    
+    if (socket.readyState === WebSocket.OPEN) {
+        console.log('closing...')
+        socket.close();
+    } 
+    
+    //join room
     let id = e.target.dataset.chatroomId
     fetch(`${url}/chatrooms/${id}`, {
         method: 'GET',
@@ -237,7 +250,12 @@ function handleMessageSubmit(e) {
 }
 
 function createConnection(chatroom_id) {
-    const socket = new WebSocket(webSocketUrl)
+    
+    socket = new WebSocket(webSocketUrl);
+
+    // socket.close()
+    // socket.open()
+
 
     socket.onopen = function() {
         console.log('WebSocket is connected.');
