@@ -72,36 +72,6 @@ function loggedInUI() {
     mainCW.append(leftPane, rightPane)
 }
 
-function loggedInNav() {
-    // Traverse Dom to find nav
-    const mainNavBar = document.querySelector('ul.nav-bar')
-    mainNavBar.innerHTML = ''
-
-    //create nodes with classes
-    const navHomeLink = document.createElement('li')
-    navHomeLink.className = 'nav-item'
-    navHomeLink.innerText = 'Home'
-    const navUserLink = document.createElement('li')
-    navUserLink.className = 'nav-item'
-    navUserLink.innerText = 'User'
-    const navChatsLink = document.createElement('li')
-    navChatsLink.className = 'nav-item'
-    navChatsLink.innerText = 'Chats'
-    const navFriendLink = document.createElement('li')
-    navFriendLink.className = 'nav-item'
-    navFriendLink.innerText = 'Friends'
-
-    //append nodes to Navbar
-    mainNavBar.append(navHomeLink, navUserLink, navChatsLink, navFriendLink);
-
-    // <ul class='nav-bar'>
-    //         <li class='nav-item'>Home</li>
-    //         <li class='nav-item'>User</li>
-    //         <li class='nav-item'>Chats</li>
-    //         <li class='nav-item'>Friends</li>
-    //     </ul>
-}
-
 function renderDropDownLogout(dropDown) {
     
     dropDown.innerHTML = ''
@@ -109,7 +79,16 @@ function renderDropDownLogout(dropDown) {
     let logoutBtn = document.createElement('div')
     logoutBtn.className = 'logout-btn'
     logoutBtn.innerText = 'Logout'
-    dropDown.append(logoutBtn)
+    let dropDownChat = document.createElement('a')
+    dropDownChat.className = 'dropdown-item'
+    dropDownChat.innerText = 'Chats'
+    let dropDownFriend = document.createElement('a')
+    dropDownFriend.className = 'dropdown-item'
+    dropDownFriend.innerText = 'Friends'
+    let dropDownEdit = document.createElement('a')
+    dropDownEdit.className = 'dropdown-item'
+    dropDownEdit.innerText = 'Edit Account'
+    dropDown.append(dropDownEdit, dropDownChat, dropDownFriend, logoutBtn)
     logoutBtn.addEventListener('click', handleLogout)
  
 }

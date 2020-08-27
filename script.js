@@ -58,8 +58,10 @@ function userActions(){
 }
 
 function handleUAClick(e) {
-    console.log(localStorage.getItem('enig_logged'))
-    let dropDown = e.target.nextElementSibling
+   
+    let dropDown = e.target.nextElementSibling;
+    dropDown.className = 'drop-down-menu';
+
     if (dropDown.style.display === 'initial') {
         dropDown.style.display = 'none'
         dropDown.innerHTML = ''
@@ -168,16 +170,16 @@ function handleLoginSubmit(e) {
     })
     .then(res => res.json())
     .then(data => {
-        localStorage.setItem('token', data.token )
-        localStorage.setItem('enig_logged', true )
-        loggedInUI()
-        loggedInNav()
-        loadData()
-        userActions()
+        localStorage.setItem('token', data.token );
+        localStorage.setItem('enig_logged', true );
+        loggedInUI();
+        loadData();
+        userActions();
     })
 
     const userDiv = document.querySelector(`div.user-details`)
     let dropDown = userDiv.nextElementSibling
+    dropDown.className = 'drop-down-menu';
     dropDown.style.display = 'none'
     dropDown.innerHTML = ''
 }
