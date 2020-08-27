@@ -51,29 +51,24 @@ function checkLogStatus() {
 
 
 function userActions(){
-    
-    const userDiv = document.querySelector(`div.user-details`)
-
-    userDiv.addEventListener("click", handleUAClick)
+    const userImg = document.querySelector(`img#user-avatar`)
+    userImg.addEventListener("click", handleUAClick)
 }
 
 function handleUAClick(e) {
-   
-    let dropDown = e.target.nextElementSibling;
-    dropDown.className = 'drop-down-menu';
+       
+    // debugger;
 
-    if (dropDown.style.display === 'initial') {
-        dropDown.style.display = 'none'
-        dropDown.innerHTML = ''
+    let dropDownCont = e.target.parentElement.nextElementSibling;
 
+    if (dropDownCont.classList.value.split(" ").includes('show')) {
+        dropDownCont.className = 'drop-down-menu';
+        dropDownCont.innerHTML = ''
     } else {
-        if (localStorage.getItem('enig_logged')) { 
-            dropDown.style.display = 'initial'
-            renderDropDownLogout(dropDown)
-        } else {
-            dropDown.style.display = 'initial'
-            renderDropDown(dropDown)
-        }
+        dropDownCont.className = 'drop-down-menu show';
+        localStorage.getItem('enig_logged') ? 
+        renderDropDownLogout(dropDownCont) : 
+        renderDropDown(dropDownCont)
     }
 }
 

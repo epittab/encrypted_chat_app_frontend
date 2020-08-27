@@ -76,16 +76,16 @@ function renderDropDownLogout(dropDown) {
     
     dropDown.innerHTML = ''
 
-    let logoutBtn = document.createElement('div')
-    logoutBtn.className = 'logout-btn'
+    let logoutBtn = document.createElement('p')
+    logoutBtn.className = 'logout-btn dropdown-item'
     logoutBtn.innerText = 'Logout'
-    let dropDownChat = document.createElement('a')
+    let dropDownChat = document.createElement('p')
     dropDownChat.className = 'dropdown-item'
     dropDownChat.innerText = 'Chats'
-    let dropDownFriend = document.createElement('a')
+    let dropDownFriend = document.createElement('p')
     dropDownFriend.className = 'dropdown-item'
     dropDownFriend.innerText = 'Friends'
-    let dropDownEdit = document.createElement('a')
+    let dropDownEdit = document.createElement('p')
     dropDownEdit.className = 'dropdown-item'
     dropDownEdit.innerText = 'Edit Account'
     dropDown.append(dropDownEdit, dropDownChat, dropDownFriend, logoutBtn)
