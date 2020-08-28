@@ -8,15 +8,16 @@ function renderChatroomOnList(chatroom){
     const chatItem = document.createElement('div')
     chatItem.className = 'chatroom-item'
     
-    const chatroomNumber = document.createElement('h3')
-    chatroomNumber.innerText = chatroom.id
+    const chatroomTitle = document.createElement('h3')
+    console.log(chatroomTitle, chatroom)
+    chatroomTitle.innerText = chatroom.chatroom_name
     
     let button = document.createElement('button')
     button.className='join-chatroom-button'
     button.dataset.chatroomId = chatroom.id
     button.innerText = 'Join'
     
-    chatItem.append(chatroomNumber, button)
+    chatItem.append(chatroomTitle, button)
     
     list.append(chatItem)
     
@@ -312,7 +313,9 @@ function newChatroom() {
                 'Accept': 'application/json',
                 'Authorization': localStorage.getItem('token')
             },
-            body: JSON.stringify(e.target)
+            body: JSON.stringify({
+                chatroom_name: e.target.firstElementChild.value
+            })
         })
         .then(resp => resp.json())
         .then(newChatroom => renderChatroomOnList(newChatroom))
