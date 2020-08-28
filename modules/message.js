@@ -56,14 +56,14 @@ function renderChatroom(chatroom) {
     const messageWindow = document.querySelector('section.messaging-window')
     messageWindow.innerHTML = ''
 
-    let h1 = document.createElement('h1')
-    h1.dataset.chatroomId = chatroom.id;
-    h1.innerText = chatroom.id;
+    let h3 = document.createElement('h3')
+    h3.dataset.chatroomId = chatroom.id;
+    h3.innerText = chatroom.chatroom_name;
 
     let messageContainer = document.createElement('div')
     messageContainer.className = 'message-container'
 
-    messageWindow.append(h1, messageContainer)
+    messageWindow.append(h3, messageContainer)
 
     chatroom.messages.forEach( message => {
         messageContainer.appendChild(renderMessage(message))
@@ -104,11 +104,29 @@ function renderMessage(message){
     let messageRow = document.createElement('div')
     let messageBody = document.createElement('div')
     let messageBtn = document.createElement('button')
+    let column1 = document.createElement('div')
+    let column2 = document.createElement('div')
+
+    column1.className = 'message-body-column-1'
+    column2.className = 'message-body-column-2'
+    messageBody.append(column1, column2)
+    
+    messageBody.className = 'message-body-wrapper'
 
     messageRow.dataset.messageId = message.id
     messageRow.className = 'message-row'
+    // debugger
+    if (parseInt(localStorage.getItem('user_id')) === message.user_id){
+        column2.textContent = message.message_text
+        column2.style.backgroundColor = 'rgb(152, 231, 210)'
+        column2.style.color = 'black'
+    } else {
+        column1.textContent = message.message_text
+        column1.style.backgroundColor = 'rgb(30, 30, 30)'
+        column1.style.color = 'lightgrey'
+    }
 
-    messageBody.textContent = message.message_text
+    
     messageBtn.innerText = "Decrypt"
     messageBtn.addEventListener("click", decryptMessage )
 

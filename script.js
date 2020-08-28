@@ -167,6 +167,7 @@ function handleLoginSubmit(e) {
     .then(data => {
         localStorage.setItem('token', data.token );
         localStorage.setItem('enig_logged', true );
+        localStorage.setItem('user_id', data.user_id );
         loggedInUI();
         loadData();
         userActions();
