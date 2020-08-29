@@ -67,11 +67,9 @@ function closeUAMenu(){
 }
 
 function handleUAClick(e) {
-    console.log('clicked');
-    // debugger;
-
+   
     let dropDownCont = e.target.parentElement.nextElementSibling;
-    console.log(dropDownCont);
+    
     if (dropDownCont.classList.value.split(" ").includes('show')) {
         closeUAMenu();
     } else {
