@@ -14,16 +14,7 @@ function loggedInUI() {
     const toggleClass = document.createElement('div')
     toggleClass.className = 'toggle'
 
-    const userListWrapper = document.createElement('div')
-    userListWrapper.className = 'user-list-wrapper'
-    const userList = document.createElement('ul')
-    userList.className = 'users-list'
-    
-    const friendsListWrapper = document.createElement('div')
-    friendsListWrapper.className = 'friends-list-wrapper'
-    const friendsList = document.createElement('ul')
-    friendsList.className = 'friends-list'
-    
+      
     const chatForm = document.createElement('form')
     chatForm.className = 'add-chat-form'
     const chatInput = document.createElement('input')
@@ -44,9 +35,8 @@ function loggedInUI() {
     
     
     menuWindow.append(menuTitle, toggleClass)
-    toggleClass.append(userListWrapper, friendsListWrapper, chatroomListWrapper)
-    userListWrapper.appendChild(userList)
-    friendsListWrapper.appendChild(friendsList)
+    toggleClass.append(chatroomListWrapper)
+    
     chatroomListWrapper.append(chatForm, chatroomList)
    
     chatForm.append(chatInput, chatBtn)
@@ -96,7 +86,7 @@ function renderDropDownLogout(dropDown) {
 
     //add event listeners to menu options
     logoutBtn.addEventListener('click', handleLogout)
-    dropDownFriend.addEventListener('click', renderFriends)
+    dropDownFriend.addEventListener('click', renderFriendsWindow)
    
  
 }

@@ -289,41 +289,44 @@ function handleRegisterSubmit(e){
 
 // render section
 
-function renderFriends() {
+function renderFriendsWindow() {
     //close UA drop down menu
     closeUAMenu();
 
     // fetch or load user-specific friends
-    let friendsArray = loadFriends();
-
+    
     //selection DOM node
     const mainCW = document.querySelector('div.main-content-wrapper');
     mainCW.innerHTML = '';
-
+    
     //create node for UI rendering
     const friendsMenuContainer = document.createElement('div');
     friendsMenuContainer.className = 'friends-menu-container';
-
+    
+    const userListWrapper = document.createElement('div')
+    userListWrapper.className = 'user-list-wrapper'
+    const userList = document.createElement('ul')
+    userList.className = 'users-list'
+    
+    const friendsListWrapper = document.createElement('div')
+    friendsListWrapper.className = 'friends-list-wrapper'
+    const friendsList = document.createElement('ul')
+    friendsList.className = 'friends-list'
+    
     const friendsTitle = document.createElement('h3');
     friendsTitle.className = 'friends-title';
     friendsTitle.innerText = 'These are your friends';
-
-    //append node to document
-    friendsMenuContainer.appendChild(friendsTitle);
-    mainCW.appendChild(friendsMenuContainer);
-    let friendItem;
     
+    userListWrapper.appendChild(userList)
+    friendsListWrapper.appendChild(friendsList)
+    
+    //append node to document
+    friendsMenuContainer.append(friendsTitle, friendsListWrapper, userListWrapper);
+    mainCW.appendChild(friendsMenuContainer);
     //append friends to list
-    friendsArray.forEach((friend) => {
-        
-        //create each node in the list
-        friendItem = document.createElement('p');
-        friendItem.className = 'friend-item';
-        friendItem.innerText = friend.name;
-
-        //append to container
-        friendsMenuContainer.appendChild(friendItem);
-    })
+    
+    loadFriends();
+    loadUsers();
 }
 
 function renderHome(){
@@ -335,8 +338,49 @@ function renderHome(){
 
 function loadFriends() {
             //get friends
-            return [{name: "Mary"}, {name: "John"}, {name: "Tyler"}]
-            //return array
+            fetch(`${url}/groups`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            .then(r => r.json())
+            .then(friendsData => {
+                // console.log(friendsData)
+                friendsData.length > 0 ? 
+                friendsData.forEach(friend => renderFriend(friend)) :
+                renderNoFriends()
+            })
+            // [{name: "Mary"}, {name: "John"}, {name: "Tyler"}].forEach((friend) => {
+            //     renderFriend(friend);
+            // })
+}
+
+function renderNoFriends(){
+    const friendsList = document.querySelector('ul.friends-list')
+    //create each node in the list
+    let friendItem = document.createElement('li');
+    friendItem.className = 'nil-friend-item';
+    friendItem.style.listStyle = 'none';
+    friendItem.innerText = 'Sorry you have no friends. Go ahead and friend another user';
+
+    //append to container
+    friendsList.appendChild(friendItem);
+}
+
+function renderFriend(friend){
+   
+    const friendsList = document.querySelector('ul.friends-list')
+    //create each node in the list
+    let friendItem = document.createElement('li');
+    friendItem.className = 'friend-item';
+    friendItem.innerText = friend.name;
+
+    //append to container
+    friendsList.appendChild(friendItem);
+
 }
 
 function loadChatrooms(){
@@ -369,45 +413,78 @@ function loadUsers() {
     })
     .then(res => res.json() )
     .then( userList => {
+        let userId = localStorage.getItem('user_id');
         userList.forEach(user=>{
-            renderUser(user)
+            if (user.id !== parseInt(userId)) renderUser(user);
         })
     })
 }
 
 function renderUser(user) {
-    const userMenu = document.querySelector('ul.users-list')
+    console.log(user)
+    const userMenu = document.querySelector('ul.users-list');
 
-    const userEl = document.createElement('li')
+    const userEl = document.createElement('li');
+    userEl.style.listStyle = 'none';
     
+    const userItemWrapper = document.createElement('div');
+    userItemWrapper.className = "user-item-wrapper";
+    userItemWrapper.id = user.id;
+    const userItemName = document.createElement('p');
+    userItemName.className = "user-item-name";
+    userItemName.innerText = `${user.username}`;
+    const userItemJoined = document.createElement('p');
+    userItemJoined.className = "user-item-join";
+    let d = new Date(user.created_at);
+    userItemJoined.innerText = `Joined: ${d.getUTCMonth()}/${d.getUTCDate()}/${d.getUTCFullYear()}`;
+    const userItemBtn = document.createElement('button');
+    userItemBtn.className = "user-item-btn";
+    userItemBtn.textContent = "Add";
 
-    userEl.style.listStyle = 'none'
-    userEl.innerText = `${user.username}`
-
+    userItemWrapper.append(userItemName, userItemJoined, userItemBtn);
+    userEl.appendChild(userItemWrapper);
     userMenu.appendChild(userEl);
+
+    userItemBtn.addEventListener("click", handleAddUser);
 }
 
+function handleAddUser(e){
+    const targetUserItem = e.target.parentElement
+    const userId = localStorage.getItem('user_id')
+
+    // fetch(`${url}/groups`, {
+    //     method: 'POST',
+    //     headers: {
+    //         'Accept': 'application/json',
+    //         'Content-Type': 'application/json',
+    //         'Authorization': `Bearer ${localStorage.getItem('token')}`,
+    //     },
+    //     body: JSON.stringify({friender_id: userId, friendee_id: targetUserItem.id})
+    // })
+    // .then( r => r.json())
+    // .then(
+    //     //update user and friend list
+    //     targetUserItem.lastChild.textContent = 'Added'
+    //     )
+    
+        targetUserItem.lastChild.textContent = 'Added'
+    console.log(targetUserItem.id, userId)
+}
 // render Encryption features
 
 function loadEncryption() {
 
-    renderTypes()
+    renderTypes();
 
-}
-
-// function loadMessageBoard() {
-//     const messageWindow = document.querySelector('section.messaging-window')
-    
-// }
-
-function renderEncryptOptions(encryptArr) {
-    console.log('connected encryption types')
 }
 
 function loadData() {
-    loadFriends()
-    loadUsers()
-    loadEncryption()
-    loadChatrooms()
-    newChatroom()
+    loadEncryption();
+    loadChatrooms();
+    newChatroom();
+}
+
+function loadFriendsData(){
+    loadFriends();
+    loadUsers();
 }
