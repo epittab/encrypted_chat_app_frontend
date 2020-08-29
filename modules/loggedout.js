@@ -3,10 +3,6 @@ function loggedOutUI() {
     const mainCW = document.querySelector('div.main-content-wrapper')
     mainCW.innerHTML = ''
 
-    //clear nav bar
-    const mainNavBar = document.querySelector('ul.nav-bar')
-    mainNavBar.innerHTML = ''
-
     //create new UI element
     const infoDiv = document.createElement('div')
     infoDiv.className = 'logged-out-div'

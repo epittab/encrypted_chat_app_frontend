@@ -102,11 +102,9 @@ function renderDropDownLogout(dropDown) {
 }
 
 function handleLogout() {
-    localStorage.removeItem('token')
-    localStorage.removeItem('enig_logged')
-    loggedOutUI()
-    userActions()
-    // checkLogStatus()
-    // .then(userActions())
-
+    closeUAMenu();
+    localStorage.removeItem('token');
+    localStorage.removeItem('enig_logged');
+    loggedOutUI();
+    userActions();
 }

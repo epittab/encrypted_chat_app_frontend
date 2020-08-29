@@ -67,11 +67,11 @@ function closeUAMenu(){
 }
 
 function handleUAClick(e) {
-       
+    console.log('clicked');
     // debugger;
 
     let dropDownCont = e.target.parentElement.nextElementSibling;
-
+    console.log(dropDownCont);
     if (dropDownCont.classList.value.split(" ").includes('show')) {
         closeUAMenu();
     } else {
@@ -183,11 +183,9 @@ function handleLoginSubmit(e) {
         userActions();
     })
 
-    const userDiv = document.querySelector(`div.user-details`)
-    let dropDown = userDiv.nextElementSibling
-    dropDown.className = 'drop-down-menu';
-    dropDown.style.display = 'none'
-    dropDown.innerHTML = ''
+    //synchronously handle closing drop down menu
+    closeUAMenu();
+   
 }
 
 function renderRegisterForm(dropDown) { 
