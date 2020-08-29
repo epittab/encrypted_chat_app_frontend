@@ -74,8 +74,10 @@ function loggedInUI() {
 
 function renderDropDownLogout(dropDown) {
     
+    //clean up menu
     dropDown.innerHTML = ''
 
+    //create nodes
     let logoutBtn = document.createElement('p')
     logoutBtn.className = 'logout-btn dropdown-item'
     logoutBtn.innerText = 'Logout'
@@ -88,7 +90,11 @@ function renderDropDownLogout(dropDown) {
     let dropDownEdit = document.createElement('p')
     dropDownEdit.className = 'dropdown-item'
     dropDownEdit.innerText = 'Edit Account'
+
+    //append nodes
     dropDown.append(dropDownEdit, dropDownChat, dropDownFriend, logoutBtn)
+
+    //add event listeners to menu options
     logoutBtn.addEventListener('click', handleLogout)
     dropDownFriend.addEventListener('click', renderFriends)
    

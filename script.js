@@ -60,6 +60,12 @@ function userActions(){
     userImg.addEventListener("click", handleUAClick)
 }
 
+function closeUAMenu(){
+    let dropDownCont = document.querySelector('div.drop-down-menu');
+    dropDownCont.className = 'drop-down-menu';
+    dropDownCont.innerHTML = '';
+}
+
 function handleUAClick(e) {
        
     // debugger;
@@ -67,8 +73,7 @@ function handleUAClick(e) {
     let dropDownCont = e.target.parentElement.nextElementSibling;
 
     if (dropDownCont.classList.value.split(" ").includes('show')) {
-        dropDownCont.className = 'drop-down-menu';
-        dropDownCont.innerHTML = ''
+        closeUAMenu();
     } else {
         dropDownCont.className = 'drop-down-menu show';
         localStorage.getItem('enig_logged') ? 
@@ -289,31 +294,52 @@ function handleRegisterSubmit(e){
 // render section
 
 function renderFriends() {
+    //close UA drop down menu
+    closeUAMenu();
+
     // fetch or load user-specific friends
     let friendsArray = loadFriends();
 
     //selection DOM node
-    const mainCW = document.querySelector('div.main-content-wrapper')
-    mainCW.innerHTML = ''
+    const mainCW = document.querySelector('div.main-content-wrapper');
+    mainCW.innerHTML = '';
 
     //create node for UI rendering
-    let friendsTitle = document.createElement('h3')
-    friendsTitle.className = 'friends-title'
-    friendsTitle.innerText = 'These are your friends'
-    
+    const friendsMenuContainer = document.createElement('div');
+    friendsMenuContainer.className = 'friends-menu-container';
+
+    const friendsTitle = document.createElement('h3');
+    friendsTitle.className = 'friends-title';
+    friendsTitle.innerText = 'These are your friends';
+
     //append node to document
-    mainCW.appendChild(friendsTitle);
+    friendsMenuContainer.appendChild(friendsTitle);
+    mainCW.appendChild(friendsMenuContainer);
+    let friendItem;
+    
+    //append friends to list
+    friendsArray.forEach((friend) => {
+        
+        //create each node in the list
+        friendItem = document.createElement('p');
+        friendItem.className = 'friend-item';
+        friendItem.innerText = friend.name;
+
+        //append to container
+        friendsMenuContainer.appendChild(friendItem);
+    })
 }
 
 function renderHome(){
-    checkLogStatus()
+    closeUAMenu();
+    checkLogStatus();
 }
 
 // load or GET section
 
 function loadFriends() {
             //get friends
-            
+            return [{name: "Mary"}, {name: "John"}, {name: "Tyler"}]
             //return array
 }
 

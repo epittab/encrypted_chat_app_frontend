@@ -15,6 +15,7 @@ nav {
 div.logo {
     margin-left: 1rem;
     line-height: 3rem;
+    cursor: pointer;
 }
 
 div.user-actions {
