@@ -51,7 +51,12 @@ function checkLogStatus() {
 
 
 function userActions(){
+    //select static ui elements which have functionality 
+    const homeBtn = document.querySelector(`div.logo`)
     const userImg = document.querySelector(`img#user-avatar`)
+
+    //add eventlisteners
+    homeBtn.addEventListener("click", renderHome)
     userImg.addEventListener("click", handleUAClick)
 }
 
@@ -282,7 +287,20 @@ function handleRegisterSubmit(e){
 }
 
 function loadFriends() {
+    //get friends
 
+    //return array
+}
+
+function renderFriends() {
+    let friendsArray = loadFriends();
+    const mainCW = document.querySelector('div.main-content-wrapper')
+    mainCW.innerHTML = ''
+
+}
+
+function renderHome(){
+    checkLogStatus()
 }
 
 function loadChatrooms(){
