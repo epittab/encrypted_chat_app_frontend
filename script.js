@@ -286,21 +286,35 @@ function handleRegisterSubmit(e){
     dropDown.innerHTML = ''
 }
 
-function loadFriends() {
-    //get friends
-
-    //return array
-}
+// render section
 
 function renderFriends() {
+    // fetch or load user-specific friends
     let friendsArray = loadFriends();
+
+    //selection DOM node
     const mainCW = document.querySelector('div.main-content-wrapper')
     mainCW.innerHTML = ''
 
+    //create node for UI rendering
+    let friendsTitle = document.createElement('h3')
+    friendsTitle.className = 'friends-title'
+    friendsTitle.innerText = 'These are your friends'
+    
+    //append node to document
+    mainCW.appendChild(friendsTitle);
 }
 
 function renderHome(){
     checkLogStatus()
+}
+
+// load or GET section
+
+function loadFriends() {
+            //get friends
+            
+            //return array
 }
 
 function loadChatrooms(){

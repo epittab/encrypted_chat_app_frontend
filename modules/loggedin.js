@@ -90,7 +90,7 @@ function renderDropDownLogout(dropDown) {
     dropDownEdit.innerText = 'Edit Account'
     dropDown.append(dropDownEdit, dropDownChat, dropDownFriend, logoutBtn)
     logoutBtn.addEventListener('click', handleLogout)
-    dropDownFriend.addEventListener('click', loadFriends)
+    dropDownFriend.addEventListener('click', renderFriends)
    
  
 }
