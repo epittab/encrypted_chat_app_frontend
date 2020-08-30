@@ -16,14 +16,35 @@ function renderChatroomOnList(chatroom){
     button.className='join-chatroom-button'
     button.dataset.chatroomId = chatroom.id
     button.innerText = 'Join'
+
+    let deleteButton = document.createElement('button')
+    deleteButton.className = 'delete-chatroom-button'
+    deleteButton.innerText = 'Delete Chatroom'
+    deleteButton.dataset.chatroomId = chatroom.id
     
-    chatItem.append(chatroomTitle, button)
+    chatItem.append(chatroomTitle, button, deleteButton)
     
     list.append(chatItem)
     
     
     button.addEventListener('click', getChatroomInfo)
+    deleteButton.addEventListener('click', deleteChatroom)
+}
+
+function deleteChatroom(e) {
+    e.preventDefault()
+    fetch(`http://localhost:3001/chatrooms/${parseInt(e.target.dataset.chatroomId)}`, {
+        method: 'DELETE',
+        headers:{
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": localStorage.getItem('token')
+        }
+    })
+    .then(res => res.json())
+    .then(console.log)
     
+
 }
 
 function getChatroomInfo(e) {
