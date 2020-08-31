@@ -459,15 +459,50 @@ function renderChatList() {
     loadChatInfo();
 }
 
-function renderChatInfo(chatroom){
+function renderChatInfo(c){
+
+    // input object is {chatroom: cr, msg_count: cr.messages.count, last_msg: cr.messages.last} 
+
     const chatsList = document.querySelector('ul.chats-list')
     //create each node in the list
-    let chatItem = document.createElement('li');
-    chatItem.className = 'chat-item';
-    chatItem.innerText = chatroom.id;
 
+    let chatItemWrapper = document.createElement('li');
+    chatItemWrapper.className = 'chat-item-wrapper'
+    chatItemWrapper.id = `wrapper-${c.chatroom.id}`
+    //name of chatroom
+    let chatName = document.createElement('p');
+    chatName.className = 'chat-item';
+    c.chatroom.name === undefined ? chatName.innerText = `ID: ${c.chatroom.id}` : chatName.innerText = `Name: ${c.chatroom.name}`
+
+    //date created of chatroom
+    let d = new Date(c.chatroom.created_at)
+    let chatDate = document.createElement('p');
+    chatDate.className = 'chat-item';
+    chatDate.innerText = `Created On: ${d.getUTCMonth()}/${d.getUTCDate()}/${d.getUTCFullYear()}`;
+    
+    //date of most recent message of chatroom
+    let d2 = new Date(c.last_msg.created_at)
+    let chatRecent = document.createElement('p');
+    chatRecent.className = 'chat-item';
+    chatRecent.innerText = `Last Message Sent: ${d2.getUTCMonth()}/${d2.getUTCDate()}/${d2.getUTCFullYear()}`;
+
+    //total number of message
+    let chatTotal = document.createElement('p');
+    chatTotal.className = 'chat-item';
+    chatTotal.innerText = `Total: ${c.msg_count}`;
+
+    //delete button
+    let deleteButton = document.createElement('button')
+    deleteButton.className = 'delete-chatroom-button'
+    deleteButton.innerText = 'Delete Chatroom'
+    deleteButton.dataset.chatroomId = c.chatroom.id
+    
+    
+    chatItemWrapper.append(chatName, chatDate, chatRecent, chatTotal, deleteButton)
     //append to container
-    chatsList.appendChild(chatItem);
+    chatsList.appendChild(chatItemWrapper);
+    
+    deleteButton.addEventListener('click', deleteChatroom)
 
 }
 
@@ -640,7 +675,7 @@ function loadChatrooms() {
 }
 
 function loadChatInfo() {
-    fetch(`${url}/chatrooms`, {
+    fetch(`${url}/chatrooms-info`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -650,7 +685,7 @@ function loadChatInfo() {
     })
         .then(res => res.json())
         .then(chatroomList => {
-            chatroomList.forEach((chatroom) => {
+            chatroomList.chatrooms.forEach((chatroom) => {
                 renderChatInfo(chatroom)
             })
         })

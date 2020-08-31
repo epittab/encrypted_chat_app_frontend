@@ -10,30 +10,28 @@ function renderChatroomOnList(chatroom){
     
     const chatroomTitle = document.createElement('h3')
     console.log(chatroomTitle, chatroom)
+    
+    chatroom.name === undefined ? chatroomTitle.innerText = `ID: ${chatroom.id}` : chatroomTitle.innerText = `Name: ${chatroom.name}`
+
     chatroomTitle.innerText = chatroom.chatroom_name
     
     let button = document.createElement('button')
     button.className='join-chatroom-button'
     button.dataset.chatroomId = chatroom.id
     button.innerText = 'Join'
-
-    let deleteButton = document.createElement('button')
-    deleteButton.className = 'delete-chatroom-button'
-    deleteButton.innerText = 'Delete Chatroom'
-    deleteButton.dataset.chatroomId = chatroom.id
     
-    chatItem.append(chatroomTitle, button, deleteButton)
+    chatItem.append(chatroomTitle, button)
     
     list.append(chatItem)
     
     
     button.addEventListener('click', getChatroomInfo)
-    deleteButton.addEventListener('click', deleteChatroom)
 }
 
 function deleteChatroom(e) {
     e.preventDefault()
-    fetch(`http://localhost:3001/chatrooms/${parseInt(e.target.dataset.chatroomId)}`, {
+    let cID = e.target.dataset.chatroomId
+    fetch(`http://localhost:3001/chatrooms/${parseInt(cID)}`, {
         method: 'DELETE',
         headers:{
             "Content-Type": "application/json",
@@ -42,7 +40,12 @@ function deleteChatroom(e) {
         }
     })
     .then(res => res.json())
-    .then(console.log)
+    .then( data => {
+        //select the node
+        let deleteNode = document.querySelector(`li#wrapper-${cID}`)
+        // remove
+        deleteNode.remove()
+    })
     
 
 }
