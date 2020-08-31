@@ -1,6 +1,8 @@
 const PORT = `3001`
 const url = `http://localhost:${PORT}`
 
+let users = [];
+
 // import variable from './modules/message.js'
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -376,7 +378,7 @@ function renderFriend(friend){
     //create each node in the list
     let friendItem = document.createElement('li');
     friendItem.className = 'friend-item';
-    friendItem.innerText = friend.name;
+    friendItem.innerText = friend.username;
 
     //append to container
     friendsList.appendChild(friendItem);
@@ -414,6 +416,7 @@ function loadUsers() {
     .then(res => res.json() )
     .then( userList => {
         let userId = localStorage.getItem('user_id');
+        users = userList;
         userList.forEach(user=>{
             if (user.id !== parseInt(userId)) renderUser(user);
         })
@@ -452,23 +455,30 @@ function handleAddUser(e){
     const targetUserItem = e.target.parentElement
     const userId = localStorage.getItem('user_id')
 
-    // fetch(`${url}/groups`, {
-    //     method: 'POST',
-    //     headers: {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json',
-    //         'Authorization': `Bearer ${localStorage.getItem('token')}`,
-    //     },
-    //     body: JSON.stringify({friender_id: userId, friendee_id: targetUserItem.id})
-    // })
-    // .then( r => r.json())
-    // .then(
-    //     //update user and friend list
-    //     targetUserItem.lastChild.textContent = 'Added'
-    //     )
+    fetch(`${url}/groups`, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({friender_id: userId, friendee_id: targetUserItem.id})
+    })
+    .then( r => r.json())
+    .then( data => {
+        //update user and friend list
+        targetUserItem.lastChild.remove() 
+        //create new node
+        const addedElement = document.createElement('p')
+        addedElement.className = 'user-friended'
+        addedElement.innerText = 'Added'
+        //append
+        targetUserItem.appendChild(addedElement)
+
+    })
     
-        targetUserItem.lastChild.textContent = 'Added'
-    console.log(targetUserItem.id, userId)
+    //     targetUserItem.lastChild.textContent = 'Added'
+    // console.log(targetUserItem.id, userId)
 }
 // render Encryption features
 
