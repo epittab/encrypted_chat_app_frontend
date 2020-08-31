@@ -404,13 +404,11 @@ function handleRegisterSubmit(e) {
             loggedInUI()
             loadData()
             userActions()
+            closeUAMenu()
         })
     e.target.reset();
 
-    const userDiv = document.querySelector(`div.user-details`)
-    let dropDown = userDiv.nextElementSibling
-    dropDown.style.display = 'none'
-    dropDown.innerHTML = ''
+    
 }
 
 // render section
