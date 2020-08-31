@@ -121,27 +121,53 @@ function editUserAccountInformation(userData) {
     const editMenuContainer = document.createElement('div');
     editMenuContainer.className = 'edit-menu-container';
 
+    let label = document.createElement('label')
+    let label2 = document.createElement('label')
+    let label3 = document.createElement('label')
+    let label4 = document.createElement('label')
+    let br = document.createElement('br')
+    let br2 = document.createElement('br')
+    let br3 = document.createElement('br')
+    let br4 = document.createElement('br')
+    let br5 = document.createElement('br')
+    
+
+    label.innerText = `First Name: `
+    label2.innerText = `Last Name: `
+    label3.innerText = 'Username: '
+    label4.innerText = 'Password: '
+
+
     let form = document.createElement('form')
     let firstNameInput = document.createElement('input')
     firstNameInput.type = 'text'
     firstNameInput.className = 'first-name-input'
     firstNameInput.value = userData.first_name
+    label.append(firstNameInput)
 
     let lastNameInput = document.createElement('input')
     lastNameInput.type = 'text'
     lastNameInput.className = 'last-name-input'
     lastNameInput.value = userData.last_name
+    label2.append(lastNameInput)
 
     let usernameInput = document.createElement('input')
     usernameInput.className = 'username-input'
     usernameInput.type = 'text'
     usernameInput.value = userData.username
+    label3.append(usernameInput)
+
+    let passwordInput = document.createElement('input')
+    passwordInput.className = 'password-input'
+    passwordInput.type = 'password'
+    passwordInput.value = userData.password
+    label4.append(passwordInput)
 
     let submitButton = document.createElement('input')
     submitButton.type = 'submit'
     submitButton.textContent = 'Update User Information'
 
-    form.append(firstNameInput, lastNameInput, usernameInput, submitButton)
+    form.append(label, br, label2, br2, label3, br3, label4, br5, br4, submitButton)
     editMenuContainer.append(form)
     mainCW.append(editMenuContainer)
 
@@ -159,10 +185,10 @@ function updateUserAccountInformation(e, userData) {
             'Authorization': localStorage.getItem('token')
         },
         body: JSON.stringify({
-            'first_name': e.target.children[0].value,
-            'last_name': e.target.children[1].value,
-            'username': e.target.children[2].value,
-            'password': 'password'
+            'first_name': e.target.children[0].children[0].value,
+            'last_name': e.target.children[2].children[0].value,
+            'username': e.target.children[4].children[0].value,
+            'password': e.target.children[6].children[0].value
         })
     })
     .then(r => r.json())
