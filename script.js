@@ -275,6 +275,7 @@ function handleRegisterSubmit(e){
     })
     .then(res => res.json())
     .then( data => {
+        localStorage.setItem('user_id', data.user_id );
         localStorage.setItem('token', data.token )
         localStorage.setItem('enig_logged', true )
         loggedInUI()
@@ -414,8 +415,9 @@ function loadUsers() {
         }
     })
     .then(res => res.json() )
-    .then( userList => {
+    .then( userData => {
         let userId = localStorage.getItem('user_id');
+        userList = userData.users;
         users = userList;
         userList.forEach(user=>{
             if (user.id !== parseInt(userId)) renderUser(user);
