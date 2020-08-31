@@ -2,6 +2,7 @@ const PORT = `3001`
 const url = `http://localhost:${PORT}`
 
 let users = [];
+let friends = [];
 
 // import variable from './modules/message.js'
 
@@ -295,6 +296,21 @@ function renderFriendsWindow() {
     //close UA drop down menu
     closeUAMenu();
 
+    //toggle switch
+    // <label class="switch">
+    //   <input type="checkbox">
+    //   <span class="slider round"></span>
+    // </label>
+        let label = document.createElement('label')
+        let input = document.createElement('input')
+        let span = document.createElement('span')
+
+        label.className = 'switch'
+        span.className = 'slider round'
+        input.type = 'checkbox'
+
+        label.append(input, span)
+
     // fetch or load user-specific friends
     
     //selection DOM node
@@ -324,7 +340,7 @@ function renderFriendsWindow() {
     
     //append node to document
     friendsMenuContainer.append(friendsTitle, friendsListWrapper, userListWrapper);
-    mainCW.appendChild(friendsMenuContainer);
+    mainCW.append(friendsMenuContainer, label);
     //append friends to list
     
     loadFriends();
@@ -352,7 +368,10 @@ function loadFriends() {
             .then(friendsData => {
                 // console.log(friendsData)
                 friendsData.length > 0 ? 
-                friendsData.forEach(friend => renderFriend(friend)) :
+                friendsData.forEach(friend => {
+                    friends.push(friend);
+                    renderFriend(friend);
+                }) :
                 renderNoFriends()
             })
             // [{name: "Mary"}, {name: "John"}, {name: "Tyler"}].forEach((friend) => {
