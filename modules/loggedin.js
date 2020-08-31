@@ -87,6 +87,7 @@ function renderDropDownLogout(dropDown) {
     //add event listeners to menu options
     logoutBtn.addEventListener('click', handleLogout)
     dropDownFriend.addEventListener('click', renderFriendsWindow)
+    dropDownEdit.addEventListener('click', renderEditAccount)
    
  
 }

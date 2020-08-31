@@ -6,11 +6,11 @@ let friends = [];
 
 // import variable from './modules/message.js'
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     // create function (fetch) to check if token is valid
 
     checkLogStatus()
-    .then(userActions())
+        .then(userActions())
     //if token valid
     // render login function
     //else token is not valid or undefined or nonexistent  
@@ -26,24 +26,24 @@ function checkLogStatus() {
             "Authorization": localStorage.getItem('token')
         }
     })
-    .then(res => {
-        if (res.ok) {
-            return res.json()
-        }
-        else {
-        //    console.log( "bad")
-            return "bad"
-           // render logged out UI
-        }
+        .then(res => {
+            if (res.ok) {
+                return res.json()
+            }
+            else {
+                //    console.log( "bad")
+                return "bad"
+                // render logged out UI
+            }
         })
-    .then(data => {
-        if (data === 'bad') {
-                
+        .then(data => {
+            if (data === 'bad') {
+
                 //handle later
                 localStorage.setItem('enig_logged', "")
                 loggedOutUI()
             } else {
-                
+
                 localStorage.setItem('enig_logged', true)
                 loggedInUI()
                 loadData()
@@ -52,8 +52,125 @@ function checkLogStatus() {
         })
 }
 
+function renderEditAccount() {
+    closeUAMenu();
 
-function userActions(){
+    // fetch or load user-specific friends
+    fetch(`http://localhost:3001/users/${localStorage.getItem('user_id')}`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+        .then(r => r.json())
+        .then(userData => {
+            console.log(userData)
+            const mainCW = document.querySelector('div.main-content-wrapper');
+            mainCW.innerHTML = '';
+
+            //create node for UI rendering
+            const editMenuContainer = document.createElement('div');
+            editMenuContainer.className = 'edit-menu-container';
+
+            const editTitle = document.createElement('h3');
+            editTitle.className = 'edit-title';
+            editTitle.innerText = 'Edit your account';
+
+
+            let firstName = document.createElement('p')
+            let lastName = document.createElement('p')
+            let uName = document.createElement('p')
+            let pWord = document.createElement('p')
+
+            firstName.innerText = userData.first_name
+            lastName.innerText = userData.last_name
+
+
+
+            uName.innerText = userData.username
+
+
+            let button = document.createElement('button')
+            button.type = 'click'
+            button.textContent = 'Edit your account'
+
+
+
+
+            //append node to document
+            editMenuContainer.append(editTitle, firstName, lastName, uName, button);
+            mainCW.append(editMenuContainer);
+
+            button.addEventListener('click', () => editUserAccountInformation(userData))
+
+        })
+    //selection DOM node
+
+    //append friends to list
+
+
+}
+
+function editUserAccountInformation(userData) {
+    const mainCW = document.querySelector('div.main-content-wrapper');
+    mainCW.innerHTML = '';
+
+    //create node for UI rendering
+    const editMenuContainer = document.createElement('div');
+    editMenuContainer.className = 'edit-menu-container';
+
+    let form = document.createElement('form')
+    let firstNameInput = document.createElement('input')
+    firstNameInput.type = 'text'
+    firstNameInput.className = 'first-name-input'
+    firstNameInput.value = userData.first_name
+
+    let lastNameInput = document.createElement('input')
+    lastNameInput.type = 'text'
+    lastNameInput.className = 'last-name-input'
+    lastNameInput.value = userData.last_name
+
+    let usernameInput = document.createElement('input')
+    usernameInput.className = 'username-input'
+    usernameInput.type = 'text'
+    usernameInput.value = userData.username
+
+    let submitButton = document.createElement('input')
+    submitButton.type = 'submit'
+    submitButton.textContent = 'Update User Information'
+
+    form.append(firstNameInput, lastNameInput, usernameInput, submitButton)
+    editMenuContainer.append(form)
+    mainCW.append(editMenuContainer)
+
+    form.addEventListener('submit', (e) => updateUserAccountInformation(e, userData))
+
+}
+
+function updateUserAccountInformation(e, userData) {
+    e.preventDefault()
+    fetch(`http://localhost:3001/users/${userData.id}`, {
+        method: 'PATCH',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem('token')
+        },
+        body: JSON.stringify({
+            'first_name': e.target.children[0].value,
+            'last_name': e.target.children[1].value,
+            'username': e.target.children[2].value
+        })
+    })
+    .then(r => r.json())
+    .then(userData => renderEditAccount())
+
+}
+
+
+function userActions() {
     //select static ui elements which have functionality 
     const homeBtn = document.querySelector(`div.logo`)
     const userImg = document.querySelector(`img#user-avatar`)
@@ -63,23 +180,23 @@ function userActions(){
     userImg.addEventListener("click", handleUAClick)
 }
 
-function closeUAMenu(){
+function closeUAMenu() {
     let dropDownCont = document.querySelector('div.drop-down-menu');
     dropDownCont.className = 'drop-down-menu';
     dropDownCont.innerHTML = '';
 }
 
 function handleUAClick(e) {
-   
+
     let dropDownCont = e.target.parentElement.nextElementSibling;
-    
+
     if (dropDownCont.classList.value.split(" ").includes('show')) {
         closeUAMenu();
     } else {
         dropDownCont.className = 'drop-down-menu show';
-        localStorage.getItem('enig_logged') ? 
-        renderDropDownLogout(dropDownCont) : 
-        renderDropDown(dropDownCont)
+        localStorage.getItem('enig_logged') ?
+            renderDropDownLogout(dropDownCont) :
+            renderDropDown(dropDownCont)
     }
 }
 
@@ -99,7 +216,7 @@ function renderDropDown(dropDown) {
     //     //render the options 'Register / Login' 
     toggleBar.append(registerBtn, loginBtn)
     dropDown.appendChild(toggleBar)
-    
+
     //     // depending on which is clicked, we can toggle the render function
     //     // callback function changes an attribute (dataset value) in the parent class
     registerBtn.addEventListener("click", () => {
@@ -115,7 +232,7 @@ function renderDropDown(dropDown) {
         dropDown.appendChild(toggleBar)
         toggleBar.dataset.formView = '1'
         renderLoginForm(dropDown)
-    })    
+    })
 }
 
 function renderLoginForm(dropDown) {
@@ -131,7 +248,7 @@ function renderLoginForm(dropDown) {
     let button = document.createElement('button')
     let pBreak = document.createElement('br')
     let pBreak2 = document.createElement('br')
-    
+
     // add attibutes
     uninput.className = 'login-input';
     uninput.name = 'username';
@@ -142,7 +259,7 @@ function renderLoginForm(dropDown) {
     upinput.id = 'login-password';
     upinput.placeholder = 'Password';
     upinput.type = 'password';
-    
+
     uname.innerText = `User Name: `;
     upword.innerText = `Password: `;
     button.innerText = `Login`;
@@ -154,7 +271,7 @@ function renderLoginForm(dropDown) {
 
     loginForm.addEventListener('submit', handleLoginSubmit)
 
-  
+
 }
 
 function handleLoginSubmit(e) {
@@ -162,34 +279,36 @@ function handleLoginSubmit(e) {
     const uName = e.target.username.value;
     const pWord = e.target.password.value;
     e.target.reset();
-    
+
     fetch(`${url}/users/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         },
-        body: JSON.stringify({'user': {
-            username: uName,
-            password: pWord
-        }})
+        body: JSON.stringify({
+            'user': {
+                username: uName,
+                password: pWord
+            }
+        })
     })
-    .then(res => res.json())
-    .then(data => {
-        localStorage.setItem('token', data.token );
-        localStorage.setItem('enig_logged', true );
-        localStorage.setItem('user_id', data.user_id );
-        loggedInUI();
-        loadData();
-        userActions();
-    })
+        .then(res => res.json())
+        .then(data => {
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('enig_logged', true);
+            localStorage.setItem('user_id', data.user_id);
+            loggedInUI();
+            loadData();
+            userActions();
+        })
 
     //synchronously handle closing drop down menu
     closeUAMenu();
-   
+
 }
 
-function renderRegisterForm(dropDown) { 
+function renderRegisterForm(dropDown) {
     //create nodes
 
     let regForm = document.createElement('form')
@@ -211,7 +330,7 @@ function renderRegisterForm(dropDown) {
     let pBreak5 = document.createElement('br')
 
     // add attibutes
-    
+
     //user input
     uninput.className = 'reg-input';
     uninput.name = 'username';
@@ -246,11 +365,11 @@ function renderRegisterForm(dropDown) {
     button.type = 'submit';
 
     //append 
-    regForm.append(firstNameLabel, firstNameInput, pBreak, 
-                    lastNameLabel, lastNameInput, pBreak2,
-                    uname, uninput, pBreak3,
-                    upword, upinput, pBreak4,
-                    button)
+    regForm.append(firstNameLabel, firstNameInput, pBreak,
+        lastNameLabel, lastNameInput, pBreak2,
+        uname, uninput, pBreak3,
+        upword, upinput, pBreak4,
+        button)
     dropDown.appendChild(regForm)
 
     regForm.addEventListener('submit', handleRegisterSubmit)
@@ -258,7 +377,7 @@ function renderRegisterForm(dropDown) {
 
 }
 
-function handleRegisterSubmit(e){
+function handleRegisterSubmit(e) {
     e.preventDefault();
     // debugger
     fetch(`${url}/users`, {
@@ -267,22 +386,24 @@ function handleRegisterSubmit(e){
             "Content-Type": "application/json",
             "Accept": "application/json"
         },
-        body: JSON.stringify({"user": {
-            first_name: e.target.firstname.value,
-            last_name: e.target.lastname.value,
-            username: e.target.username.value,
-            password: e.target.password.value
-        }})
+        body: JSON.stringify({
+            "user": {
+                first_name: e.target.firstname.value,
+                last_name: e.target.lastname.value,
+                username: e.target.username.value,
+                password: e.target.password.value
+            }
+        })
     })
-    .then(res => res.json())
-    .then( data => {
-        localStorage.setItem('user_id', data.user_id );
-        localStorage.setItem('token', data.token )
-        localStorage.setItem('enig_logged', true )
-        loggedInUI()
-        loadData()
-        userActions()
-    })
+        .then(res => res.json())
+        .then(data => {
+            localStorage.setItem('user_id', data.user_id);
+            localStorage.setItem('token', data.token)
+            localStorage.setItem('enig_logged', true)
+            loggedInUI()
+            loadData()
+            userActions()
+        })
     e.target.reset();
 
     const userDiv = document.querySelector(`div.user-details`)
@@ -298,57 +419,95 @@ function renderFriendsWindow() {
     closeUAMenu();
 
     //toggle switch
-    // <label class="switch">
-    //   <input type="checkbox">
-    //   <span class="slider round"></span>
-    // </label>
-        let label = document.createElement('label')
-        let input = document.createElement('input')
-        let span = document.createElement('span')
 
-        label.className = 'switch'
-        span.className = 'slider round'
-        input.type = 'checkbox'
+    let label = document.createElement('label');
+    let input = document.createElement('input');
+    let span = document.createElement('span');
 
-        label.append(input, span)
+    label.className = 'switch';
+    span.className = 'slider round';
+    input.type = 'checkbox';
+
+    label.append(input, span);
 
     // fetch or load user-specific friends
-    
+
     //selection DOM node
     const mainCW = document.querySelector('div.main-content-wrapper');
     mainCW.innerHTML = '';
-    
+
     //create node for UI rendering
     const friendsMenuContainer = document.createElement('div');
     friendsMenuContainer.className = 'friends-menu-container';
-    
-    const userListWrapper = document.createElement('div')
-    userListWrapper.className = 'user-list-wrapper'
-    const userList = document.createElement('ul')
-    userList.className = 'users-list'
-    
-    const friendsListWrapper = document.createElement('div')
-    friendsListWrapper.className = 'friends-list-wrapper'
-    const friendsList = document.createElement('ul')
-    friendsList.className = 'friends-list'
-    
+
+    //append node to document
+    mainCW.append(friendsMenuContainer, label);
+    //append friends to list
+
+    input.addEventListener("change", toggleFriends);
+    renderUsersList();
+}
+
+function renderFriendsList() {
+    //select node
+    let friendsMenu = document.querySelector('div.friends-menu-container');
+    friendsMenu.innerHTML = '';
+
+    const friendsListWrapper = document.createElement('div');
+    friendsListWrapper.className = 'friends-list-wrapper';
+
+    const friendsList = document.createElement('ul');
+    friendsList.className = 'friends-list';
+
     const friendsTitle = document.createElement('h3');
     friendsTitle.className = 'friends-title';
     friendsTitle.innerText = 'These are your friends';
-    
-    userListWrapper.appendChild(userList)
-    friendsListWrapper.appendChild(friendsList)
-    
+
+    friendsListWrapper.appendChild(friendsList);
+
     //append node to document
-    friendsMenuContainer.append(friendsTitle, friendsListWrapper, userListWrapper);
-    mainCW.append(friendsMenuContainer, label);
+    friendsMenu.append(friendsTitle, friendsListWrapper);
+
     //append friends to list
-    
+
     loadFriends();
+}
+
+function renderUsersList() {
+    let friendsMenu = document.querySelector('div.friends-menu-container');
+    friendsMenu.innerHTML = '';
+
+    const usersListWrapper = document.createElement('div');
+    usersListWrapper.className = 'users-list-wrapper';
+
+    const usersList = document.createElement('ul');
+    usersList.className = 'users-list';
+
+    const usersTitle = document.createElement('h3');
+    usersTitle.className = 'users-title';
+    usersTitle.innerText = 'User List';
+
+    usersListWrapper.appendChild(usersList);
+
+
+    //append node to document
+    friendsMenu.append(usersTitle, usersListWrapper);
+
+    //append friends to list
+
     loadUsers();
 }
 
-function renderHome(){
+function toggleFriends() {
+    if (this.checked) {
+        renderFriendsList()
+    } else {
+        renderUsersList()
+    }
+}
+
+
+function renderHome() {
     closeUAMenu();
     checkLogStatus();
 }
@@ -356,31 +515,31 @@ function renderHome(){
 // load or GET section
 
 function loadFriends() {
-            //get friends
-            fetch(`${url}/groups`, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            })
-            .then(r => r.json())
-            .then(friendsData => {
-                // console.log(friendsData)
-                friendsData.length > 0 ? 
-                friendsData.forEach(friend => {
+    //get friends
+    fetch(`${url}/groups`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    })
+        .then(r => r.json())
+        .then(friendsData => {
+            console.log(friendsData)
+            friendsData.friends_list.length > 0 ?
+                friendsData.friends_list.forEach(friend => {
                     friends.push(friend);
                     renderFriend(friend);
                 }) :
                 renderNoFriends()
-            })
-            // [{name: "Mary"}, {name: "John"}, {name: "Tyler"}].forEach((friend) => {
-            //     renderFriend(friend);
-            // })
+        })
+    // [{name: "Mary"}, {name: "John"}, {name: "Tyler"}].forEach((friend) => {
+    //     renderFriend(friend);
+    // })
 }
 
-function renderNoFriends(){
+function renderNoFriends() {
     const friendsList = document.querySelector('ul.friends-list')
     //create each node in the list
     let friendItem = document.createElement('li');
@@ -392,8 +551,8 @@ function renderNoFriends(){
     friendsList.appendChild(friendItem);
 }
 
-function renderFriend(friend){
-   
+function renderFriend(friend) {
+
     const friendsList = document.querySelector('ul.friends-list')
     //create each node in the list
     let friendItem = document.createElement('li');
@@ -405,7 +564,7 @@ function renderFriend(friend){
 
 }
 
-function loadChatrooms(){
+function loadChatrooms() {
     fetch(`${url}/chatrooms`, {
         method: "GET",
         headers: {
@@ -414,17 +573,17 @@ function loadChatrooms(){
             'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
     })
-    .then(res => res.json() )
-    .then( chatroomList => {
-        chatroomList.forEach((chatroom) => {
-            console.log(chatroom)
-            renderChatroomOnList(chatroom)
+        .then(res => res.json())
+        .then(chatroomList => {
+            chatroomList.forEach((chatroom) => {
+                console.log(chatroom)
+                renderChatroomOnList(chatroom)
+            })
         })
-    })
 }
 
 function loadUsers() {
-    
+
     fetch(`${url}/users`, {
         method: "GET",
         headers: {
@@ -433,24 +592,24 @@ function loadUsers() {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
     })
-    .then(res => res.json() )
-    .then( userData => {
-        let userId = localStorage.getItem('user_id');
-        userList = userData.users;
-        users = userList;
-        userList.forEach(user=>{
-            if (user.id !== parseInt(userId)) renderUser(user);
+        .then(res => res.json())
+        .then(userData => {
+            let userId = localStorage.getItem('user_id');
+            userList = userData.users;
+            users = userList;
+            userList.forEach(u => {
+                if (u.id !== parseInt(userId)) renderUser(u.user, u.isFriend);
+            })
         })
-    })
 }
 
-function renderUser(user) {
-    console.log(user)
+function renderUser(user, isFriend) {
+
     const userMenu = document.querySelector('ul.users-list');
 
     const userEl = document.createElement('li');
     userEl.style.listStyle = 'none';
-    
+
     const userItemWrapper = document.createElement('div');
     userItemWrapper.className = "user-item-wrapper";
     userItemWrapper.id = user.id;
@@ -461,18 +620,26 @@ function renderUser(user) {
     userItemJoined.className = "user-item-join";
     let d = new Date(user.created_at);
     userItemJoined.innerText = `Joined: ${d.getUTCMonth()}/${d.getUTCDate()}/${d.getUTCFullYear()}`;
-    const userItemBtn = document.createElement('button');
-    userItemBtn.className = "user-item-btn";
-    userItemBtn.textContent = "Add";
 
-    userItemWrapper.append(userItemName, userItemJoined, userItemBtn);
+    if (isFriend) {
+        const addedElement = document.createElement('p')
+        addedElement.className = "user-added";
+        addedElement.textContent = "Added";
+        userItemWrapper.append(userItemName, userItemJoined, addedElement);
+    } else {
+        const userItemBtn = document.createElement('button');
+        userItemBtn.className = "user-item-btn";
+        userItemBtn.textContent = "Add";
+        userItemBtn.addEventListener("click", handleAddUser);
+        userItemWrapper.append(userItemName, userItemJoined, userItemBtn);
+    }
+
     userEl.appendChild(userItemWrapper);
     userMenu.appendChild(userEl);
 
-    userItemBtn.addEventListener("click", handleAddUser);
 }
 
-function handleAddUser(e){
+function handleAddUser(e) {
     const targetUserItem = e.target.parentElement
     const userId = localStorage.getItem('user_id')
 
@@ -483,21 +650,21 @@ function handleAddUser(e){
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify({friender_id: userId, friendee_id: targetUserItem.id})
+        body: JSON.stringify({ friender_id: userId, friendee_id: targetUserItem.id })
     })
-    .then( r => r.json())
-    .then( data => {
-        //update user and friend list
-        targetUserItem.lastChild.remove() 
-        //create new node
-        const addedElement = document.createElement('p')
-        addedElement.className = 'user-friended'
-        addedElement.innerText = 'Added'
-        //append
-        targetUserItem.appendChild(addedElement)
+        .then(r => r.json())
+        .then(data => {
+            //update user list
+            targetUserItem.lastChild.remove()
+            //create new node
+            const addedElement = document.createElement('p')
+            addedElement.className = 'user-added'
+            addedElement.innerText = 'Added'
+            //append
+            targetUserItem.appendChild(addedElement)
 
-    })
-    
+        })
+
     //     targetUserItem.lastChild.textContent = 'Added'
     // console.log(targetUserItem.id, userId)
 }
@@ -515,7 +682,7 @@ function loadData() {
     newChatroom();
 }
 
-function loadFriendsData(){
+function loadFriendsData() {
     loadFriends();
     loadUsers();
 }
