@@ -415,6 +415,64 @@ function handleRegisterSubmit(e) {
 
 // render section
 
+function renderChatWindow(){
+    //close UA drop down menu
+    closeUAMenu();
+
+    // fetch or load user-specific friends
+
+    //selection DOM node
+    const mainCW = document.querySelector('div.main-content-wrapper');
+    mainCW.innerHTML = '';
+
+    //create node for UI rendering
+    const roomsMenuContainer = document.createElement('div');
+    roomsMenuContainer.className = 'chatrooms-menu-container';
+
+    //append node to document
+    mainCW.append(roomsMenuContainer);
+    //append friends to list
+
+    renderChatList();
+}
+
+function renderChatList() {
+    //select node
+    let roomsMenu = document.querySelector('div.chatrooms-menu-container');
+    roomsMenu.innerHTML = '';
+
+    const chatsListWrapper = document.createElement('div');
+    chatsListWrapper.className = 'chats-list-wrapper';
+
+    const chatsList = document.createElement('ul');
+    chatsList.className = 'chats-list';
+
+    const chatsTitle = document.createElement('h3');
+    chatsTitle.className = 'chats-title';
+    chatsTitle.innerText = 'These are your chatrooms';
+
+    chatsListWrapper.appendChild(chatsList);
+
+    //append node to document
+    roomsMenu.append(chatsTitle, chatsListWrapper);
+
+    //append friends to list
+
+    loadChatInfo();
+}
+
+function renderChatInfo(chatroom){
+    const chatsList = document.querySelector('ul.chats-list')
+    //create each node in the list
+    let chatItem = document.createElement('li');
+    chatItem.className = 'chat-item';
+    chatItem.innerText = chatroom.id;
+
+    //append to container
+    chatsList.appendChild(chatItem);
+
+}
+
 function renderFriendsWindow() {
     //close UA drop down menu
     closeUAMenu();
@@ -579,6 +637,23 @@ function loadChatrooms() {
             chatroomList.forEach((chatroom) => {
                 console.log(chatroom)
                 renderChatroomOnList(chatroom)
+            })
+        })
+}
+
+function loadChatInfo() {
+    fetch(`${url}/chatrooms`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    })
+        .then(res => res.json())
+        .then(chatroomList => {
+            chatroomList.forEach((chatroom) => {
+                renderChatInfo(chatroom)
             })
         })
 }
