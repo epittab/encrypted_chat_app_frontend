@@ -161,7 +161,8 @@ function updateUserAccountInformation(e, userData) {
         body: JSON.stringify({
             'first_name': e.target.children[0].value,
             'last_name': e.target.children[1].value,
-            'username': e.target.children[2].value
+            'username': e.target.children[2].value,
+            'password': 'password'
         })
     })
     .then(r => r.json())
