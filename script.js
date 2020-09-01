@@ -705,15 +705,29 @@ function renderNoFriends() {
 }
 
 function renderFriend(friend) {
-
+    console.log(friend)
     const friendsList = document.querySelector('ul.friends-list')
     //create each node in the list
-    let friendItem = document.createElement('li');
-    friendItem.className = 'friend-item';
-    friendItem.innerText = friend.username;
+    let friendRow = document.createElement('li');
+    friendRow.className = 'friend-row';
 
+    let friendItem = document.createElement('div');
+    friendItem.className = 'friend-item-wrapper';
+    
+    let friendItemUN = document.createElement('div');
+    friendItemUN.className = 'friend-item';
+    friendItemUN.innerHTML = `Username: <span>${friend.username}</span>`
+    
+    let friendItemFN = document.createElement('div');
+    friendItemFN.className = 'friend-item';
+    friendItemFN.innerHTML = `Full Name: <span>${friend.first_name} ${friend.last_name}</span>`;
+    
+    
+    //append to list
+    friendItem.append(friendItemUN, friendItemFN);
+    friendRow.appendChild(friendItem);
     //append to container
-    friendsList.appendChild(friendItem);
+    friendsList.appendChild(friendRow);
 
 }
 

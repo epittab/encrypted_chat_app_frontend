@@ -456,6 +456,26 @@ div.friends-menu-container {
     width: 85vw;
 }
 
+li.friend-row{
+    list-style: none;
+    height: 1.5rem;
+}
+
+div.friend-item-wrapper {
+    padding: 0 1rem 0 1rem; 
+    display: grid;
+    grid-template-columns: 2fr 3fr 1fr;
+    align-items: center;
+    width: 80vw;
+    transition: .2s ease-in;
+}
+
+div.friend-item-wrapper:hover {
+    border-radius: 5px;
+    background-color: rgba(30, 30, 30, 1);
+    transition: .2s ease-in;
+}
+
 .slider:before {
     position: absolute;
     content: "";
