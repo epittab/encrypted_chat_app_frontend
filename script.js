@@ -504,23 +504,23 @@ function renderChatInfo(c){
     let d = new Date(c.chatroom.created_at)
     let chatDate = document.createElement('p');
     chatDate.className = 'chat-item';
-    chatDate.innerText = `Created On: ${d.getUTCMonth()}/${d.getUTCDate()}/${d.getUTCFullYear()}`;
+    chatDate.innerText = `Created: ${d.getUTCMonth()}/${d.getUTCDate()}/${d.getUTCFullYear()}`;
     
     //date of most recent message of chatroom
     let d2 = new Date(c.last_msg.created_at)
     let chatRecent = document.createElement('p');
     chatRecent.className = 'chat-item';
-    chatRecent.innerText = `Last Message Sent: ${d2.getUTCMonth()}/${d2.getUTCDate()}/${d2.getUTCFullYear()}`;
+    chatRecent.innerText = `Last Sent: ${d2.getUTCMonth()}/${d2.getUTCDate()}/${d2.getUTCFullYear()}`;
 
     //total number of message
     let chatTotal = document.createElement('p');
     chatTotal.className = 'chat-item';
-    chatTotal.innerText = `Total: ${c.msg_count}`;
+    chatTotal.innerText = `Msgs: ${c.msg_count}`;
 
     //delete button
     let deleteButton = document.createElement('button')
     deleteButton.className = 'delete-chatroom-button'
-    deleteButton.innerText = 'Delete Chatroom'
+    deleteButton.innerText = 'Delete'
     deleteButton.dataset.chatroomId = c.chatroom.id
     
     
