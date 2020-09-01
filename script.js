@@ -82,7 +82,7 @@ function renderEditAccount() {
 
             const editTitle = document.createElement('h3');
             editTitle.className = 'edit-title';
-            editTitle.innerText = 'Edit your account';
+            editTitle.innerText = 'Edit Account';
 
 
             let firstName = document.createElement('p')
@@ -99,7 +99,7 @@ function renderEditAccount() {
 
             let button = document.createElement('button')
             button.type = 'click'
-            button.textContent = 'Edit your account'
+            button.textContent = 'Edit'
             button.className = 'edit-account-btn'
 
             //append node to document
@@ -614,7 +614,7 @@ function renderFriendsList() {
 
     const friendsTitle = document.createElement('h3');
     friendsTitle.className = 'friends-title';
-    friendsTitle.innerText = 'These are your friends';
+    friendsTitle.innerText = 'Friends List';
 
     friendsListWrapper.appendChild(friendsList);
 

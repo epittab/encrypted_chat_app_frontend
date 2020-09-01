@@ -458,7 +458,7 @@ div.friends-menu-container {
 
 li.friend-row{
     list-style: none;
-    height: 1.5rem;
+    
 }
 
 div.friend-item-wrapper {
@@ -467,6 +467,7 @@ div.friend-item-wrapper {
     grid-template-columns: 2fr 3fr 1fr;
     align-items: center;
     width: 80vw;
+    height: 3rem;
     transition: .2s ease-in;
 }
 
