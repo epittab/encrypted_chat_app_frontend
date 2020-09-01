@@ -10,21 +10,26 @@ function loggedInUI() {
     const menuWindow = document.createElement('section')
     menuWindow.className = 'menu-window'
     const menuTitle = document.createElement('h1')
-    menuTitle.innerText = 'Menu'
+    menuTitle.innerText = 'Chatrooms'
     const toggleClass = document.createElement('div')
     toggleClass.className = 'toggle'
 
-      
+    // create chatroom form
     const chatForm = document.createElement('form')
     chatForm.className = 'add-chat-form'
+
+    //create input
     const chatInput = document.createElement('input')
     chatInput.type = 'text'
     chatInput.className = 'add-chatroom-name'
-    chatInput.placeholder = ''
+    chatInput.placeholder = 'Add Chatroom Name'
+
+    // button
     const chatBtn = document.createElement('button')
-    chatBtn.setAttribute('id', 'add-chat')
+    chatBtn.setAttribute('id', 'add-chat') //chatBtn.id = 'add-chat';
+    chatBtn.className = 'submit-btn'
     chatBtn.type = 'submit'
-    chatBtn.innerText = 'Add Chatroom'
+    chatBtn.innerText = 'Submit'
     
     
     const chatroomListWrapper = document.createElement('div')

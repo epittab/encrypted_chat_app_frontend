@@ -71,8 +71,14 @@ function renderEditAccount() {
             mainCW.innerHTML = '';
 
             //create node for UI rendering
+            const editMenu = document.createElement('div');
+            editMenu.className = 'edit-menu';
+
             const editMenuContainer = document.createElement('div');
             editMenuContainer.className = 'edit-menu-container';
+
+            const editMenuImage = document.createElement('div');
+            editMenuImage.className = 'edit-menu-image';
 
             const editTitle = document.createElement('h3');
             editTitle.className = 'edit-title';
@@ -82,26 +88,24 @@ function renderEditAccount() {
             let firstName = document.createElement('p')
             let lastName = document.createElement('p')
             let uName = document.createElement('p')
-            let pWord = document.createElement('p')
 
-            firstName.innerText = userData.first_name
-            lastName.innerText = userData.last_name
-
+            firstName.innerHTML = `First Name: <span>${userData.first_name}</span>`
+            lastName.innerHTML = `Last Name: <span>${userData.last_name}</span>`
 
 
-            uName.innerText = userData.username
+
+            uName.innerHTML = `Username: <span>${userData.username}</span>`
 
 
             let button = document.createElement('button')
             button.type = 'click'
             button.textContent = 'Edit your account'
-
-
-
+            button.className = 'edit-account-btn'
 
             //append node to document
             editMenuContainer.append(editTitle, firstName, lastName, uName, button);
-            mainCW.append(editMenuContainer);
+            editMenu.append(editMenuImage, editMenuContainer)
+            mainCW.append(editMenu);
 
             button.addEventListener('click', () => editUserAccountInformation(userData))
 
@@ -166,6 +170,7 @@ function editUserAccountInformation(userData) {
     let submitButton = document.createElement('input')
     submitButton.type = 'submit'
     submitButton.textContent = 'Update User Information'
+    submitButton.className = 'submit-btn'
 
     form.append(label, br, label2, br2, label3, br3, label4, br5, br4, submitButton)
     editMenuContainer.append(form)
@@ -509,19 +514,26 @@ function renderChatInfo(c){
     //name of chatroom
     let chatName = document.createElement('p');
     chatName.className = 'chat-item';
-    c.chatroom.name === undefined ? chatName.innerText = `ID: ${c.chatroom.id}` : chatName.innerText = `Name: ${c.chatroom.name}`
+    !c.chatroom.chatroom_name ? chatName.innerText = `ID: ${c.chatroom.id}` : chatName.innerText = `Name: ${c.chatroom.chatroom_name}`
 
     //date created of chatroom
     let d = new Date(c.chatroom.created_at)
     let chatDate = document.createElement('p');
     chatDate.className = 'chat-item';
-    chatDate.innerText = `Created: ${d.getUTCMonth()}/${d.getUTCDate()}/${d.getUTCFullYear()}`;
+    chatDate.innerText = `Created: ${d.getUTCMonth()+1}/${d.getUTCDate()}/${d.getUTCFullYear()}`;
     
     //date of most recent message of chatroom
-    let d2 = new Date(c.last_msg.created_at)
-    let chatRecent = document.createElement('p');
-    chatRecent.className = 'chat-item';
-    chatRecent.innerText = `Last Sent: ${d2.getUTCMonth()}/${d2.getUTCDate()}/${d2.getUTCFullYear()}`;
+    let chatRecent;
+    if (c.last_msg) {
+        let d2 = new Date(c.last_msg.created_at)
+        chatRecent = document.createElement('p');
+        chatRecent.className = 'chat-item';
+        chatRecent.innerText = `Last Sent: ${d2.getUTCMonth()+1}/${d2.getUTCDate()}/${d2.getUTCFullYear()}`;
+    } else {
+        chatRecent = document.createElement('p');
+        chatRecent.className = 'chat-item';
+        chatRecent.innerText = `No Messages Sent`;
+    }
 
     //total number of message
     let chatTotal = document.createElement('p');
@@ -541,6 +553,18 @@ function renderChatInfo(c){
     
     deleteButton.addEventListener('click', deleteChatroom)
 
+}
+
+function renderNoChats() {
+    const chatsList = document.querySelector('ul.chats-list')
+    //create each node in the list
+    let chatItem = document.createElement('li');
+    chatItem.className = 'nil-chat-item';
+    chatItem.style.listStyle = 'none';
+    chatItem.innerText = 'Sorry you have not created a chatroom.';
+
+    //append to container
+    chatsList.appendChild(chatItem);
 }
 
 function renderFriendsWindow() {
@@ -705,7 +729,7 @@ function loadChatrooms() {
         .then(res => res.json())
         .then(chatroomList => {
             chatroomList.forEach((chatroom) => {
-                console.log(chatroom)
+                // console.log(chatroom)
                 renderChatroomOnList(chatroom)
             })
         })
@@ -722,9 +746,12 @@ function loadChatInfo() {
     })
         .then(res => res.json())
         .then(chatroomList => {
-            chatroomList.chatrooms.forEach((chatroom) => {
-                renderChatInfo(chatroom)
-            })
+            console.log(chatroomList)
+            if (chatroomList.chatrooms.length > 0 ) {
+                chatroomList.chatrooms.forEach( c => renderChatInfo(c))
+            } else {
+                renderNoChats()
+            }
         })
 }
 
@@ -770,7 +797,7 @@ function renderUser(user, isFriend) {
     if (isFriend) {
         const addedElement = document.createElement('p')
         addedElement.className = "user-added";
-        addedElement.textContent = "Added";
+        addedElement.textContent = "Friend";
         userItemWrapper.append(userItemName, userItemJoined, addedElement);
     } else {
         const userItemBtn = document.createElement('button');
@@ -805,7 +832,7 @@ function handleAddUser(e) {
             //create new node
             const addedElement = document.createElement('p')
             addedElement.className = 'user-added'
-            addedElement.innerText = 'Added'
+            addedElement.innerText = 'Friend'
             //append
             targetUserItem.appendChild(addedElement)
 

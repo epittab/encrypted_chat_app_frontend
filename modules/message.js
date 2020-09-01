@@ -9,11 +9,11 @@ function renderChatroomOnList(chatroom){
     chatItem.className = 'chatroom-item'
     
     const chatroomTitle = document.createElement('h3')
-    console.log(chatroomTitle, chatroom)
+    // console.log(chatroomTitle, chatroom)
     
-    chatroom.name === undefined ? chatroomTitle.innerText = `ID: ${chatroom.id}` : chatroomTitle.innerText = `Name: ${chatroom.name}`
+    chatroom.chatroom_name === null || chatroom.chatroom_name === '' ? chatroomTitle.innerText = `ID: ${chatroom.id}` : chatroomTitle.innerText = `Name: ${chatroom.chatroom_name}`
 
-    chatroomTitle.innerText = chatroom.chatroom_name
+    // chatroomTitle.innerText = chatroom.chatroom_name
     
     let button = document.createElement('button')
     button.className='join-chatroom-button'
@@ -82,7 +82,7 @@ function renderChatroom(chatroom) {
 
     let h3 = document.createElement('h3')
     h3.dataset.chatroomId = chatroom.id;
-    h3.innerText = chatroom.chatroom_name;
+    chatroom.chatroom_name === null || chatroom.chatroom_name === '' ? h3.innerText = `ID: ${chatroom.id}` : h3.innerText = `Name: ${chatroom.chatroom_name}`
 
     let messageContainer = document.createElement('div')
     messageContainer.className = 'message-container'
@@ -96,21 +96,26 @@ function renderChatroom(chatroom) {
 
     let messageFormWrapper = document.createElement('div');
     let form = document.createElement('form');
+    form.className = 'chat-text-form'
 
     let input1 = document.createElement('input');
     input1.name = 'message';
     input1.id = 'reg-msg';
     input1.placeholder = 'Type your message';
-
+    input1.className= 'chat-text-input';
+    
     let encrypt = document.createElement('button');
-    encrypt.innerText = 'Encrypt the message';
-
+    encrypt.innerText = 'Encrypt ';
+    encrypt.className = 'chatroom-btns'
+    
     let input2 = document.createElement('input');
     input2.name = 'encryptedMessage';
     input2.id = 'encrypt-msg';
     input2.placeholder = 'Your encrypted message';
+    input2.className= 'chat-text-input';
 
     let submit = document.createElement('button');
+    submit.className = 'chatroom-btns'
     submit.type = 'submit';
     submit.innerText = 'Submit'
 
@@ -152,6 +157,7 @@ function renderMessage(message){
 
     
     messageBtn.innerText = "Decrypt"
+    messageBtn.className = 'chatroom-btns'
     messageBtn.addEventListener("click", decryptMessage )
 
     messageRow.append(messageBody, messageBtn)

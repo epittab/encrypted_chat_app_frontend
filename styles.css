@@ -79,6 +79,37 @@ input.login-input {
     margin-top: .5rem;
     margin-bottom: .5rem;
 }
+form.add-chat-form {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+input.add-chatroom-name {
+    border: none;
+    height: 1.5rem;
+    color: rgb(220, 220, 220);
+    border-bottom: 1px solid rgb(30, 30, 30);
+    background-color: rgb(45, 45, 45); 
+    margin-right: .5rem;
+}
+
+input.submit-btn {
+    background-color: rgb(112, 187, 112);
+    border: none;
+    border-radius: 10px;
+    height: 1.5rem;
+    width: 100%;
+}
+
+button.submit-btn {
+    background-color: rgb(112, 187, 112);
+    border: none;
+    border-radius: 10px;
+    height: 1.5rem;
+    width: 100%;
+}
 
 button.login-button {
     width: 50%;
@@ -91,6 +122,14 @@ button.login-button {
     height: 2rem;
     background-color: rgb(45, 45, 45);
     left: calc(50% - (75px / 2))
+}
+
+button.chatroom-btns {
+    background-color: rgb(112, 187, 112);
+    border: none;
+    border-radius: 10px;
+    height: 1.5rem;
+    
 }
 
 div.register-button:hover, div.login-button:hover {
@@ -166,16 +205,24 @@ div.chatroom-list {
 }
 
 div.chatroom-item {
-    display:flex;
-    flex-direction: row;
-    justify-content: space-evenly;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    /* justify-content: space-evenly; */
     align-items: center;
     width: 100%;
 }
 
+button.edit-account-btn {
+    height: 1.5rem;
+    width: 100%;
+    background-color: rgb(152, 231, 210);
+    border: none;
+    border-radius: 10px;
+}
+
 div.chatroom-item button.join-chatroom-button {
     height: 1.5rem;
-    width: 35%;
+    width: 100%;
     background-color: rgb(152, 231, 210);
     border: none;
     border-radius: 10px;
@@ -227,18 +274,39 @@ div.message-body-wrapper{
 
 div.message-body-column-1{
     width: 50%;
+    height: 1.5rem;
+    line-height: 1.5rem;
     margin: 0 1rem 0 1rem;
     padding: 0 1rem 0 1rem;
     border-radius: 10px;
-
 }
 
 div.message-body-column-2{
     width: 50%;
+    height: 1.5rem;
+    line-height: 1.5rem;
     margin: 0 1rem 0 1rem;
     padding: 0 1rem 0 1rem;
     border-radius: 10px;
 }
+
+form.chat-text-form {
+    margin-top: 1rem;
+    width: 90%;
+    display: grid;
+    grid-template-columns: 3fr 1fr 3fr 1fr;
+    column-gap: 1rem;
+}
+
+input.chat-text-input {
+    border: none;
+    height: 1.5rem;
+    color: rgb(220, 220, 220);
+    border-bottom: 1px solid rgb(30, 30, 30);
+    background-color: rgb(45, 45, 45); 
+}
+
+
 
 div.logged-out-div {
     display: flex;
@@ -264,6 +332,10 @@ div.logged-out-div h3.logout-text {
 
 div.logged-out-div h3.logout-text span{
     color: rgb(190, 190, 190);
+}
+
+span {
+    color: rgb(190, 190, 190);;
 }
 
 div.logged-out-div img {
@@ -370,6 +442,7 @@ p.user-added {
 .slider {
     position: absolute;
     cursor: pointer;
+    z-index: -1;
     top: 0;
     left: 0;
     right: 0;
@@ -377,6 +450,10 @@ p.user-added {
     background-color: #ccc;
     -webkit-transition: .4s;
     transition: .4s;
+}
+
+div.friends-menu-container {
+    width: 85vw;
 }
 
 .slider:before {
@@ -429,9 +506,30 @@ li.chat-item-wrapper:hover {
     transition: .2s ease-in;
 }
 
+#encrypt-type {
+    background-color: rgba(45, 45, 45, 1);
+    color: rgb(220, 220, 220);
+    height: 1.5rem;
+    border: none;
+}
+
 button.delete-chatroom-button {
     height: 1.5rem;
     border: none;
     border-radius: 10px;
     background-color: rgb(187, 112, 112);
+}
+
+div.edit-menu {
+    margin-top: 6rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 4rem;
+}
+
+div.edit-menu-image {
+    background-image: url('./Assets/images/mask.svg');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
 }
