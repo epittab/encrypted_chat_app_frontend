@@ -277,28 +277,31 @@ function renderLoginForm(dropDown) {
     let pBreak2 = document.createElement('br')
 
     // add attibutes
+    uname.className = 'login-label';
+    upword.className = 'login-label';
     uninput.className = 'login-input';
     uninput.name = 'username';
     uninput.id = 'login-user';
-    uninput.placeholder = 'User Name';
+    uninput.placeholder = 'Enter User Name';
     upinput.className = 'login-input';
     upinput.name = 'password';
     upinput.id = 'login-password';
-    upinput.placeholder = 'Password';
+    upinput.placeholder = 'Enter Password';
     upinput.type = 'password';
 
     uname.innerText = `User Name: `;
     upword.innerText = `Password: `;
     button.innerText = `Login`;
     button.type = 'submit';
+    button.className = 'login-button'
     //append 
-
+    
     loginForm.append(uname, uninput, pBreak, upword, upinput, pBreak2, button)
     dropDown.appendChild(loginForm)
-
+    
     loginForm.addEventListener('submit', handleLoginSubmit)
-
-
+    
+    
 }
 
 function handleLoginSubmit(e) {
@@ -306,7 +309,7 @@ function handleLoginSubmit(e) {
     const uName = e.target.username.value;
     const pWord = e.target.password.value;
     e.target.reset();
-
+    
     fetch(`${url}/users/login`, {
         method: 'POST',
         headers: {
@@ -320,27 +323,27 @@ function handleLoginSubmit(e) {
             }
         })
     })
-        .then(res => res.json())
-        .then(data => {
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('enig_logged', true);
-            localStorage.setItem('user_id', data.user_id);
-            loggedInUI();
-            loadData();
-            userActions();
-        })
-
+    .then(res => res.json())
+    .then(data => {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('enig_logged', true);
+        localStorage.setItem('user_id', data.user_id);
+        loggedInUI();
+        loadData();
+        userActions();
+    })
+    
     //synchronously handle closing drop down menu
     closeUAMenu();
-
+    
 }
 
 function renderRegisterForm(dropDown) {
     //create nodes
-
+    
     let regForm = document.createElement('form')
     regForm.className = 'ua-form'
-
+    
     let uname = document.createElement('label')
     let uninput = document.createElement('input')
     let upword = document.createElement('label')
@@ -355,34 +358,42 @@ function renderRegisterForm(dropDown) {
     let pBreak3 = document.createElement('br')
     let pBreak4 = document.createElement('br')
     let pBreak5 = document.createElement('br')
-
+    
     // add attibutes
-
+    
+    uname.className = 'login-label';
+    upword.className = 'login-label';
+    firstNameLabel.className = 'login-label';
+    lastNameLabel.className = 'login-label';
+    
     //user input
-    uninput.className = 'reg-input';
+    uninput.className = 'login-input';
     uninput.name = 'username';
     uninput.id = 'register-user';
-    uninput.placeholder = 'User Name';
-
+    uninput.placeholder = 'Enter User Name';
+    
     //password input
-    upinput.className = 'reg-input';
+    upinput.className = 'login-input';
     upinput.name = 'password';
     upinput.id = 'register-password';
-    upinput.placeholder = 'Password';
+    upinput.placeholder = 'Enter Password';
     upinput.type = 'password';
-
+    
     //first name input
-    firstNameInput.className = 'reg-input';
+    firstNameInput.className = 'login-input';
     firstNameInput.name = 'firstname';
     firstNameInput.id = 'register-firstname';
-    firstNameInput.placeholder = 'First Name';
-
+    firstNameInput.placeholder = 'Enter First Name';
+    
     //last name input
-    lastNameInput.className = 'reg-input';
+    lastNameInput.className = 'login-input';
     lastNameInput.name = 'lastname';
     lastNameInput.id = 'register-lastname';
-    lastNameInput.placeholder = 'Last Name';
+    lastNameInput.placeholder = 'Enter Last Name';
 
+    //button class
+    button.className = 'login-button';
+    
     //modify nodes
     firstNameLabel.innerText = 'First Name: '
     lastNameLabel.innerText = 'Last Name: '
@@ -390,7 +401,7 @@ function renderRegisterForm(dropDown) {
     upword.innerText = `Password: `;
     button.innerText = `Register`;
     button.type = 'submit';
-
+    
     //append 
     regForm.append(firstNameLabel, firstNameInput, pBreak,
         lastNameLabel, lastNameInput, pBreak2,
