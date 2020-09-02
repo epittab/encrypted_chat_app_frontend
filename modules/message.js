@@ -367,6 +367,7 @@ function newChatroom() {
         })
         .then(resp => resp.json())
         .then(newChatroom => renderChatroomOnList(newChatroom))
+        e.target.reset()
     })
-    newChatroomForm.reset();
+    // newChatroomForm.reset();
 }
