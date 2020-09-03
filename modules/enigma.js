@@ -67,11 +67,11 @@ function generateEngimaKeyString(){
     rotors.forEach( rotor => {
         // interpolate into a string and number the positions    
         if (rotor.dataset.rotorPosition === undefined || rotor.dataset.rotorPosition === '0' ) {
-            keyString += `rotor1`
+            keyString += `1rotor`
         } else {
-            keyString += `rotor${rotor.dataset.rotorPosition}`
+            keyString += `${rotor.dataset.rotorPosition}rotor`
         }
     }) 
-    // return string i.e., 'rotor23rotor1rotor15'
+    // return string i.e., '23rotor1rotor15rotor'
     return keyString
 }
