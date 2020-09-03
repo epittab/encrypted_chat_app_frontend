@@ -330,12 +330,17 @@ function handleLoginSubmit(e) {
     })
     .then(res => res.json())
     .then(data => {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('enig_logged', true);
-        localStorage.setItem('user_id', data.user_id);
-        loggedInUI();
-        loadData();
-        userActions();
+        if (data.error) {
+            alert('Incorrect username and/or password.')
+            loggedOutUI();
+        } else {
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('enig_logged', true);
+            localStorage.setItem('user_id', data.user_id);
+            loggedInUI();
+            loadData();
+            userActions();
+        }
     })
     
     //synchronously handle closing drop down menu
@@ -440,13 +445,19 @@ function handleRegisterSubmit(e) {
     })
         .then(res => res.json())
         .then(data => {
-            localStorage.setItem('user_id', data.user_id);
-            localStorage.setItem('token', data.token)
-            localStorage.setItem('enig_logged', true)
-            loggedInUI()
-            loadData()
-            userActions()
-            closeUAMenu()
+            debugger;
+            if (data.errors) {
+                loggedOutUI()
+                alert(data.errors[0]);
+            } else {
+                localStorage.setItem('user_id', data.user_id);
+                localStorage.setItem('token', data.token)
+                localStorage.setItem('enig_logged', true)
+                loggedInUI()
+                loadData()
+                userActions()
+                closeUAMenu()
+            }
         })
     e.target.reset();
 
